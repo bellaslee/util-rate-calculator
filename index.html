@@ -13,7 +13,8 @@
         <header class="page__header">
             <h1 class="page__title">Productive Utilization Rate Calculator</h1>
             <p class="page__lead">
-                Enter each month’s utilization (0–100%). The score is the annual average.
+                Enter each month’s utilization (0–100%). The headline score is that
+                annual average adjusted for PTO in the second panel (2,000 h year).
                 Empty months count as 0%. Values are saved in your browser only
                 (local storage).
             </p>
@@ -21,7 +22,7 @@
         <section class="panel" id="app" aria-label="Utilization tool">
             <div class="score" aria-live="polite" aria-atomic="true">
                 <p class="score__value score__value--low" id="scoreDisplay">0.0%</p>
-                <p class="score__label">Annual average</p>
+                <p class="score__label">PTO-adjusted annual average</p>
             </div>
             <div class="months" role="group" aria-label="Monthly utilization, percent">
                 <div class="month-col">
@@ -95,6 +96,58 @@
                     <input class="month-col__input" type="number" id="util-12"
                         data-month="12" min="0" max="100" step="0.1" inputmode="decimal"
                         placeholder="0" />
+                </div>
+            </div>
+        </section>
+        <section class="panel" id="ptoPanel" aria-labelledby="ptoCardTitle">
+            <div class="pto-card" id="ptoCard">
+                <h2 class="pto-card__title" id="ptoCardTitle">PTO impact</h2>
+                <p class="pto-card__lead">
+                    Assumes <strong>2,000</strong> working hours per year and
+                    <strong>8 hours</strong> per PTO day. Days on bench do not
+                    reduce utilization (bench days cannot exceed total PTO days).
+                </p>
+                <div class="pto-card__fields">
+                    <div class="pto-card__field">
+                        <label class="pto-card__label" for="ptoDays">PTO days
+                            (year)</label>
+                        <input class="pto-card__input month-col__input" type="number"
+                            id="ptoDays" min="0" step="0.25" inputmode="decimal"
+                            placeholder="0" />
+                    </div>
+                    <div class="pto-card__field">
+                        <label class="pto-card__label" for="ptoBenchDays">PTO days
+                            on bench</label>
+                        <input class="pto-card__input month-col__input" type="number"
+                            id="ptoBenchDays" min="0" step="0.25" inputmode="decimal"
+                            placeholder="0" />
+                    </div>
+                    <div class="pto-card__field pto-card__field--notes">
+                        <label class="pto-card__label" for="ptoNotes">Notes</label>
+                        <textarea id="ptoNotes" class="pto-card__notes-input" rows="2"
+                            autocomplete="off" placeholder="Optional"></textarea>
+                    </div>
+                </div>
+                <div class="pto-card__summary" id="ptoSummary" aria-live="polite"
+                    aria-atomic="true">
+                    <dl class="pto-card__stats">
+                        <div class="pto-card__stat">
+                            <dt>Total PTO hours</dt>
+                            <dd id="ptoTotalHours">0</dd>
+                        </div>
+                        <div class="pto-card__stat">
+                            <dt>PTO hours affecting utilization</dt>
+                            <dd id="ptoImpactHours">0</dd>
+                        </div>
+                        <div class="pto-card__stat">
+                            <dt>Impacting PTO (% of 2,000 h)</dt>
+                            <dd id="ptoPctYear">0.0%</dd>
+                        </div>
+                        <div class="pto-card__stat">
+                            <dt>Change vs. months-only average</dt>
+                            <dd id="ptoDeltaUtil">0.0 pts</dd>
+                        </div>
+                    </dl>
                 </div>
             </div>
         </section>
