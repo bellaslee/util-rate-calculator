@@ -49,6 +49,15 @@
     return `${mean.toFixed(1)}%`;
   }
 
+  const scoreBands = ["score__value--high", "score__value--mid", "score__value--low"];
+
+  function setScoreBand(mean) {
+    scoreDisplay.classList.remove(...scoreBands);
+    if (mean >= 86) scoreDisplay.classList.add("score__value--high");
+    else if (mean >= 60) scoreDisplay.classList.add("score__value--mid");
+    else scoreDisplay.classList.add("score__value--low");
+  }
+
   function updateScore() {
     let sum = 0;
     for (const el of inputs) {
@@ -56,6 +65,7 @@
     }
     const mean = sum / 12;
     scoreDisplay.textContent = formatScore(mean);
+    setScoreBand(mean);
   }
 
   function onFieldUpdate() {
