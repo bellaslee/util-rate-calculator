@@ -196,12 +196,16 @@
     return Math.min(Math.max(0, raw), MAX_IMPACTING_PTO_HOURS);
   }
 
-  /** Monthly mean scaled by impacting PTO hours vs. 2,000 h baseline. */
+  /**
+   * PTO-adjusted utilization. The portion up to 100% scales with impacting PTO
+   * hours vs. the 2,000 h baseline; any excess above 100% is kept as-is.
+   */
   function utilizationWithPto(monthlyMeanPct) {
     const h = ptoImpactingHours();
-    return (
-      monthlyMeanPct * (WORK_HOURS_YEAR - h) / WORK_HOURS_YEAR
-    );
+    const scale = (WORK_HOURS_YEAR - h) / WORK_HOURS_YEAR;
+    const base = Math.min(100, monthlyMeanPct);
+    const overflow = Math.max(0, monthlyMeanPct - 100);
+    return base * scale + overflow;
   }
 
   function updatePtoSummary(monthlyMeanPct, displayedPct) {
