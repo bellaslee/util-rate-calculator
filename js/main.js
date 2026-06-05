@@ -165,7 +165,7 @@
     if (raw === "") return 0;
     const n = Number.parseFloat(raw);
     if (!Number.isFinite(n)) return 0;
-    return Math.min(100, Math.max(0, n));
+    return Math.max(0, n);
   }
 
   function formatScore(mean) {
